@@ -1,1 +1,1 @@
-# Adaptative Gaussian Mixture Model
+# Modelo de msitura de gaussianas adaptativo
