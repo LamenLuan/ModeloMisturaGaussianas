@@ -1,0 +1,1 @@
+# Adaptative Gaussian Mixture Model
