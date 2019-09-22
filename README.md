@@ -1,1 +1,1 @@
-# Modelo de msitura de gaussianas adaptativo
+# Modelo de mistura de gaussianas adaptativo
