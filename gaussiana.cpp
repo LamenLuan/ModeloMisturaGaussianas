@@ -38,7 +38,7 @@ float GaussianaAdaptativa::funcaoDensidadeProbabilidade(int t_valorPixel)
     float parte1 = 0, parte2 = 0, diferenca = t_valorPixel - m_media;
 
     parte1 = 1 / ( pow( (2 * M_PI),
-    (dimensionalidade / 2) ) * pow(fabs(m_desvioPadrao), 0.5) );
+    ( GaussianaAdaptativa::dimensionalidade/ 2) ) * pow(fabs(m_desvioPadrao), 0.5) );
 
     parte2 = exp(-0.5 * diferenca * (1 / m_desvioPadrao) * diferenca);
     return parte1 * parte2;
