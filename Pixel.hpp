@@ -6,16 +6,18 @@
 class Pixel
 {
 private:
-    // Quantidade de gaussianas usadas na mistura.
+
 public:
+    // Quantidade de gaussianas usadas na mistura.
     enum M_QUANTIDADE_DISTRIBUICOES {M_QUANTIDADE_DISTRIBUICOES = 3};
-    Gaussiana* m_mistura[M_QUANTIDADE_DISTRIBUICOES];
     
+    Gaussiana* m_mistura[M_QUANTIDADE_DISTRIBUICOES];
     // Construtores/Destrutores:
     Pixel(int valorDoPixel = 0);
     virtual ~Pixel();
     // Metodos:
     float probabilidadeDoPixel(int valorDoPixel = 0);
+    void leNovoPixel(int valorDoPixel);
     // Getters:
 
     // Setters:

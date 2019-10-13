@@ -1,5 +1,5 @@
 #include "Gaussiana.hpp"
-//TESTE TESTE TESTE
+
 const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 2.5;
 
 // Construtores/Destrutores:
@@ -48,6 +48,15 @@ void Gaussiana::atualizaDesvioPadrao(int t_valorPixel)
 
     m_desvioPadrao = ((1 - funcaoRho()) * m_desvioPadrao) +
         (funcaoRho() * diferenca * diferenca);
+}
+
+// O valor 2.5 define o intervalo de media que dita a ocorrencia (ou nao) do 
+// match.
+bool Gaussiana::verificaMatch(int valorDoPixel)
+{
+    float desvioNecessario = m_desvioPadrao * 2.5;
+    return valorDoPixel <= (m_media + desvioNecessario) || 
+        valorDoPixel >= (m_media - desvioNecessario);
 }
 
 // Getters:
