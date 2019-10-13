@@ -13,10 +13,10 @@ private:
 public:
     // Constante de aprendizagem usada na atualização
     // dos valores da Gaussiana.
-    static const float CONSTANTE_APRENDIZAGEM;
+    static const float M_CONSTANTE_APRENDIZAGEM;
 
     // Construtores/Destrutores:
-    Gaussiana(float t_media = 0, float t_peso = 0);
+    Gaussiana(float t_media = 0, float t_peso = 1);
     virtual ~Gaussiana();
 
     // Metodos:

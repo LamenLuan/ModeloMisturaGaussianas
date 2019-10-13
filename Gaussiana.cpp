@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::CONSTANTE_APRENDIZAGEM = 2.5;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 2.5;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)
@@ -27,14 +27,14 @@ float Gaussiana::funcaoDensidadeProbabilidade(int t_valorPixel)
 
 float Gaussiana::funcaoRho()
 {
-    float rho = funcaoDensidadeProbabilidade(m_media) * CONSTANTE_APRENDIZAGEM;
+    float rho = funcaoDensidadeProbabilidade(m_media) *
+        M_CONSTANTE_APRENDIZAGEM;
     return rho;
 }
 
 void Gaussiana::atualizaPeso(bool t_match)
 {
-    m_peso = ((1 - CONSTANTE_APRENDIZAGEM) * m_peso) +
-        (CONSTANTE_APRENDIZAGEM * (int)t_match);
+    m_peso = m_peso + M_CONSTANTE_APRENDIZAGEM * ( (int) t_match - m_peso);
 }
 
 void Gaussiana::atualizaMedia(int t_valorPixel)

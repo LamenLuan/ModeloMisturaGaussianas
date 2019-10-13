@@ -7,10 +7,10 @@ class Pixel
 {
 private:
     // Quantidade de gaussianas usadas na mistura.
-    enum QUANTIDADE_DISTRIBUICOES {QUANTIDADE_DISTRIBUICOES = 3};
-    Gaussiana* m_mistura[QUANTIDADE_DISTRIBUICOES];
-
 public:
+    enum M_QUANTIDADE_DISTRIBUICOES {M_QUANTIDADE_DISTRIBUICOES = 3};
+    Gaussiana* m_mistura[M_QUANTIDADE_DISTRIBUICOES];
+    
     // Construtores/Destrutores:
     Pixel(int valorDoPixel = 0);
     virtual ~Pixel();
