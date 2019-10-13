@@ -1,5 +1,5 @@
 #include "Gaussiana.hpp"
-
+//TESTE TESTE TESTE
 const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 2.5;
 
 // Construtores/Destrutores:
