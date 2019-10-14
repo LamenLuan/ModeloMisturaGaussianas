@@ -25,7 +25,7 @@ public:
     void atualizaPeso(bool t_match);
     void atualizaMedia(int t_valorPixel);
     void atualizaDesvioPadrao(int t_valorPixel);
-    bool verificaMatch(int valorDoPixel);
+    bool verificaMatch(int t_valorPixel);
 
     // Getters:
     float getMedia() const;

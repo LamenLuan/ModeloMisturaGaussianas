@@ -13,11 +13,12 @@ public:
     
     Gaussiana* m_mistura[M_QUANTIDADE_DISTRIBUICOES];
     // Construtores/Destrutores:
-    Pixel(int valorDoPixel = 0);
+    Pixel(int t_valorPixel = 0);
     virtual ~Pixel();
     // Metodos:
-    float probabilidadeDoPixel(int valorDoPixel = 0);
-    void leNovoPixel(int valorDoPixel);
+    float probabilidadeDoPixel(int t_valorPixel = 0);
+    void leNovoPixel(int t_valorPixel);
+    void renormalizaGaussiana(void);
     // Getters:
 
     // Setters:
