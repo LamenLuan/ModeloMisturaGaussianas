@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 2.5;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.8;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)
@@ -55,7 +55,7 @@ void Gaussiana::atualizaDesvioPadrao(int t_valorPixel)
 bool Gaussiana::verificaMatch(int t_valorPixel)
 {
     float desvioNecessario = m_desvioPadrao * 2.5;
-    return t_valorPixel <= (m_media + desvioNecessario) || 
+    return t_valorPixel <= (m_media + desvioNecessario) &&
         t_valorPixel >= (m_media - desvioNecessario);
 }
 
