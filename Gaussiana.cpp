@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.8;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.2;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)
@@ -34,7 +34,12 @@ float Gaussiana::funcaoRho()
 
 void Gaussiana::atualizaPeso(bool t_match)
 {
-    m_peso = m_peso + M_CONSTANTE_APRENDIZAGEM * ( (int) t_match - m_peso);
+    //Estudar para saber se realmente poderemos usar a formula comentada em
+    //qualquer caso.
+    //m_peso = m_peso + M_CONSTANTE_APRENDIZAGEM * ( (int) t_match - m_peso);
+    m_peso = 
+        (1 - M_CONSTANTE_APRENDIZAGEM) * m_peso + M_CONSTANTE_APRENDIZAGEM * 
+        t_match;
 }
 
 void Gaussiana::atualizaMedia(int t_valorPixel)

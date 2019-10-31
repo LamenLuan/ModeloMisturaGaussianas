@@ -17,10 +17,10 @@ public:
     virtual ~Pixel();
     // Metodos:
     float probabilidadeDoPixel(int t_valorPixel = 0);
+    void renormalizaGaussianas();
     void leNovoPixel(int t_valorPixel);
-    void renormalizaGaussiana();
     short buscaMenorPeso();
-    //void trocaGaussiana();
+    void trocaGaussiana();
     // Getters:
 
     // Setters:

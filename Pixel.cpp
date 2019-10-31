@@ -32,6 +32,18 @@ float Pixel::probabilidadeDoPixel(int t_valorPixel)
     return probabilidade;
 }
 
+void Pixel::renormalizaGaussianas()
+{
+    // O valor SomatorioPesos esta baseado na soma de todos os pesos, e o
+    // valor minimo sera sempre zero.
+    float SomatorioPesos = 0;
+    for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
+        SomatorioPesos += (m_mistura + i)->getPeso();
+
+    for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
+        (m_mistura + i)->setPeso((m_mistura + i)->getPeso() / SomatorioPesos);
+}
+
 void Pixel::leNovoPixel(int t_valorPixel)
 {
     bool match = false;
@@ -53,22 +65,11 @@ void Pixel::leNovoPixel(int t_valorPixel)
         indiceMenor = buscaMenorPeso();
         (m_mistura + indiceMenor)->setMedia(t_valorPixel);
         (m_mistura + indiceMenor)->setDesvioPadrao
-            ((m_mistura + indiceMenor)->getDesvioPadrao() * 10);
+            ((m_mistura + indiceMenor)->getDesvioPadrao() * 5);
         (m_mistura + indiceMenor)->setPeso
-            ((m_mistura + indiceMenor)->getPeso() / 10);
+            ((m_mistura + indiceMenor)->getPeso() / 5);
     }
-}
-
-void Pixel::renormalizaGaussiana()
-{
-    // O valor SomatorioPesos esta baseado na soma de todos os pesos, e o
-    // valor minimo sera sempre zero.
-    float SomatorioPesos = 0;
-    for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
-        SomatorioPesos += (m_mistura + i)->getPeso();
-    
-    for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)        
-        (m_mistura + i)->setPeso((m_mistura + i)->getPeso() / SomatorioPesos);
+    renormalizaGaussianas();
 }
 
 short Pixel::buscaMenorPeso()
@@ -81,13 +82,10 @@ short Pixel::buscaMenorPeso()
     }
     return indiceMenor;
 }
-
-/*
+// Continuar a pesquisa sobre copy constructors!
 void Pixel::trocaGaussiana()
 {
     short indiceMenor = buscaMenorPeso();
-    Gaussiana* auxiliar = nullptr;
-    auxiliar = (m_mistura + indiceMenor);
-    (m_mistura + indiceMenor) =  (m_mistura + M_QUANTIDADE_DISTRIBUICOES - 1);
+    Gaussiana* auxiliar(m_mistura + indiceMenor);
+
 }
-*/
