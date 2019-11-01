@@ -6,12 +6,11 @@
 class Pixel
 {
 private:
-
 public:
     // Quantidade de gaussianas usadas na mistura.
     static const int M_QUANTIDADE_DISTRIBUICOES;
-    
-    Gaussiana* m_mistura = new Gaussiana[M_QUANTIDADE_DISTRIBUICOES];
+
+    Gaussiana *m_mistura = new Gaussiana[M_QUANTIDADE_DISTRIBUICOES];
     // Construtores/Destrutores:
     Pixel(int t_valorPixel = 0);
     virtual ~Pixel();
@@ -24,7 +23,6 @@ public:
     // Getters:
 
     // Setters:
-
 };
 
 #endif

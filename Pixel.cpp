@@ -8,7 +8,7 @@ Pixel::Pixel(int t_valorPixel)
     for (size_t i = 0; i < Pixel::M_QUANTIDADE_DISTRIBUICOES; i++)
     {
         (m_mistura + i)->setMedia(t_valorPixel);
-        (m_mistura + i)->setPeso((float) 1 / Pixel::M_QUANTIDADE_DISTRIBUICOES);
+        (m_mistura + i)->setPeso((float)1 / Pixel::M_QUANTIDADE_DISTRIBUICOES);
     }
 }
 
@@ -26,7 +26,7 @@ float Pixel::probabilidadeDoPixel(int t_valorPixel)
 {
     float probabilidade = 0;
     for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
-        probabilidade += 
+        probabilidade +=
             (m_mistura + i)->funcaoDensidadeProbabilidade(t_valorPixel) *
             (m_mistura + i)->getPeso();
     return probabilidade;
@@ -50,24 +50,24 @@ void Pixel::leNovoPixel(int t_valorPixel)
     short indiceMenor;
     for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
     {
-        if( (m_mistura + i)->verificaMatch(t_valorPixel) )
+        if ((m_mistura + i)->verificaMatch(t_valorPixel))
         {
             (m_mistura + i)->atualizaMedia(t_valorPixel);
             (m_mistura + i)->atualizaDesvioPadrao(t_valorPixel);
             (m_mistura + i)->atualizaPeso(true);
             match = true;
-
         }
-        else (m_mistura + i)->atualizaPeso(false);
+        else
+            (m_mistura + i)->atualizaPeso(false);
     }
     if (!match)
     {
         indiceMenor = buscaMenorPeso();
         (m_mistura + indiceMenor)->setMedia(t_valorPixel);
-        (m_mistura + indiceMenor)->setDesvioPadrao
-            ((m_mistura + indiceMenor)->getDesvioPadrao() * 5);
-        (m_mistura + indiceMenor)->setPeso
-            ((m_mistura + indiceMenor)->getPeso() / 5);
+        (m_mistura + indiceMenor)->setDesvioPadrao((m_mistura + indiceMenor)
+            ->getDesvioPadrao() * 5);
+        (m_mistura + indiceMenor)->setPeso((m_mistura + indiceMenor)
+            ->getPeso() / 5);
     }
     renormalizaGaussianas();
 }
@@ -77,7 +77,7 @@ short Pixel::buscaMenorPeso()
     short indiceMenor = 0;
     for (size_t i = 1; i < M_QUANTIDADE_DISTRIBUICOES; i++)
     {
-        if ((m_mistura + indiceMenor)->getPeso() > (m_mistura + i)->getPeso() )
+        if ((m_mistura + indiceMenor)->getPeso() > (m_mistura + i)->getPeso())
             indiceMenor = i;
     }
     return indiceMenor;
@@ -86,6 +86,5 @@ short Pixel::buscaMenorPeso()
 void Pixel::trocaGaussiana()
 {
     short indiceMenor = buscaMenorPeso();
-    Gaussiana* auxiliar(m_mistura + indiceMenor);
-
+    Gaussiana *auxiliar(m_mistura + indiceMenor);
 }

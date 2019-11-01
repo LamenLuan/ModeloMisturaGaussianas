@@ -2,6 +2,7 @@
 #define GAUSSIANA_HPP_
 
 #include <cmath>
+#include <iostream>
 
 class Gaussiana
 {
