@@ -71,7 +71,7 @@ void Pixel::leNovoPixel(int t_valorPixel)
     }
     renormalizaGaussianas();
 }
-
+ 
 short Pixel::buscaMenorPeso()
 {
     short indiceMenor = 0;

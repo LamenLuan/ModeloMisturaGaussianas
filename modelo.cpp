@@ -9,7 +9,8 @@ int main()
     bool temFrame = true;
 
     std::list<Pixel*> pixels;
-
+    std::list<Pixel*>::iterator atual;
+    
     cv::VideoCapture video("../Videos/00005.mp4");
     cv::Mat frame, cinza;
 
@@ -19,7 +20,6 @@ int main()
                   << "\n";
         return -1;
     }
-
     video >> frame;
     if (frame.empty())
     {
@@ -35,12 +35,58 @@ int main()
     {
         for (int j = 0; j < cinza.cols; j++)
         {
+            
             //ERRO NA CHAMADA DO DESTRUTOR DA CLASSE PIXEL AO TENTAR CRIAR UMA 
             //LISTA DE OBJETOS ESTÁTICOS.
             pixels.push_back(new Pixel((int) cinza.at<unsigned char>(i, j)));
         }
     }
 
+    //Repetição para a leitura de novos frames e atualização do modelo ao ler
+    //seus valores.
+    while(temFrame)
+    {
+        video >> frame;
+
+        if(frame.empty())
+        {
+            temFrame = false;
+            continue;
+        }
+        
+        cv::cvtColor(frame, cinza, cv::COLOR_BGR2GRAY);
+        
+        atual = pixels.begin();
+        for (int i = 0; i < cinza.rows; i++)
+        {
+            for (int j = 0; j < cinza.cols; j++)
+            {
+                for(int k = 0; k < Pixel::M_QUANTIDADE_DISTRIBUICOES; k++)
+                {
+                    std::cout << ((*atual)->m_mistura + k)-> getMedia() << " ";
+                    std::cout << ((*atual)->m_mistura + k)-> getDesvioPadrao() 
+                              << " ";
+                    std::cout << ((*atual)->m_mistura + k)-> getPeso() << "\n";
+                }
+                
+                std::cout << (unsigned int) cinza.at<unsigned char>(i, j)
+                          << "\n";
+
+                (*atual)->leNovoPixel(cinza.at<unsigned char>(i,j));
+                
+                for(int k = 0; k < Pixel::M_QUANTIDADE_DISTRIBUICOES; k++)
+                {
+                    std::cout << ((*atual)->m_mistura + k)-> getMedia() << " ";
+                    std::cout << ((*atual)->m_mistura + k)-> getDesvioPadrao() 
+                              << " ";
+                    std::cout << ((*atual)->m_mistura + k)-> getPeso() << "\n";
+                }
+                atual++;
+            }
+        }
+                   
+    }
+    
     video.release();
     cv::destroyAllWindows();
 
