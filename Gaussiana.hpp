@@ -22,7 +22,7 @@ public:
 
     // Metodos:
     float funcaoDensidadeProbabilidade(int t_valorPixel);
-    float funcaoRho();
+    float funcaoRho(int t_valorPixel);
     void atualizaPeso(bool t_match);
     void atualizaMedia(int t_valorPixel);
     void atualizaDesvioPadrao(int t_valorPixel);

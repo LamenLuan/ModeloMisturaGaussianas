@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.2;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.02;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)
@@ -14,26 +14,24 @@ Gaussiana::~Gaussiana()
 
 // Metodos:
 
-// VALOR DA PARTE 1 ESTA PASSANDO DE 5, UMA FDP PODE CHEGAR EM UM VALOR MAIOR 
-// QUE UM? 
+// VALOR DA PARTE 1 ESTA PASSANDO DE 5, UMA FDP PODE CHEGAR EM UM VALOR MAIOR
+// QUE UM?
 float Gaussiana::funcaoDensidadeProbabilidade(int t_valorPixel)
 {
     // Dividindo a formula em duas partes por ser extensa.
     float parte1 = 0, parte2 = 0, diferenca = t_valorPixel - m_media;
 
-    parte1 = 1 / (sqrt(2 * M_PI) * m_desvioPadrao);
-    parte2 = exp(-0.5 * diferenca * diferenca * (1 / m_desvioPadrao));
-    if (parte1 * parte2 >= 1)
-    {
-        std::cout << "SFOIDOIASFJIOS" << "\n";
-    }
+    parte1 = 1.0 / (sqrt(2.0 * M_PI) * m_desvioPadrao);
+    parte2 = exp(-0.5 * diferenca * diferenca *
+        (1.0f / m_desvioPadrao * m_desvioPadrao));
+
+    if (parte1 * parte2 >= 1) return 1.0;
     return parte1 * parte2;
 }
-// A FUNCAO RHO ESTA DANDO VALORES MAIORES QUE 1, O QUE RESULTA EM VALORES 
-// NEGATIVOS NA ATUALIZACAO DO DESVIO PADRAO POR CONTA DA FDP.
-float Gaussiana::funcaoRho()
+
+float Gaussiana::funcaoRho(int t_valorPixel)
 {
-    float rho = funcaoDensidadeProbabilidade(m_media) *
+    float rho = funcaoDensidadeProbabilidade(t_valorPixel) *
                 M_CONSTANTE_APRENDIZAGEM;
     return rho;
 }
@@ -45,20 +43,23 @@ void Gaussiana::atualizaPeso(bool t_match)
     //m_peso = m_peso + M_CONSTANTE_APRENDIZAGEM * ( (int) t_match - m_peso);
     m_peso =
         (1 - M_CONSTANTE_APRENDIZAGEM) * m_peso + M_CONSTANTE_APRENDIZAGEM *
-                                                      t_match;
+        t_match;
 }
 
 void Gaussiana::atualizaMedia(int t_valorPixel)
 {
-    m_media = ((1 - funcaoRho()) * m_media) + (funcaoRho() * t_valorPixel);
+    m_media = ((1 - funcaoRho(t_valorPixel)) * m_media) + 
+        (funcaoRho(t_valorPixel) * t_valorPixel);
 }
 
 void Gaussiana::atualizaDesvioPadrao(int t_valorPixel)
 {
     float diferenca = t_valorPixel - m_media;
 
-    m_desvioPadrao = ((1 - funcaoRho()) * m_desvioPadrao) +
-                     (funcaoRho() * diferenca * diferenca);
+    m_desvioPadrao = ((1 - funcaoRho(t_valorPixel)) * m_desvioPadrao) +
+        (funcaoRho(t_valorPixel) * diferenca * diferenca);
+    //Limitando o desvio padrão para testes.
+    if (m_desvioPadrao < 0.0001) m_desvioPadrao = 0.0001;
 }
 
 // O valor 2.5 define o intervalo de media que dita a ocorrencia (ou nao) do
@@ -67,7 +68,7 @@ bool Gaussiana::verificaMatch(int t_valorPixel)
 {
     float desvioNecessario = m_desvioPadrao * 2.5;
     return t_valorPixel <= (m_media + desvioNecessario) &&
-           t_valorPixel >= (m_media - desvioNecessario);
+        t_valorPixel >= (m_media - desvioNecessario);
 }
 
 // Getters:

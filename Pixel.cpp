@@ -64,10 +64,8 @@ void Pixel::leNovoPixel(int t_valorPixel)
     {
         indiceMenor = buscaMenorPeso();
         (m_mistura + indiceMenor)->setMedia(t_valorPixel);
-        (m_mistura + indiceMenor)->setDesvioPadrao((m_mistura + indiceMenor)
-            ->getDesvioPadrao() * 5);
-        (m_mistura + indiceMenor)->setPeso((m_mistura + indiceMenor)
-            ->getPeso() / 5);
+        (m_mistura + indiceMenor)->setDesvioPadrao(8);
+        (m_mistura + indiceMenor)->setPeso(0.01);
     }
     renormalizaGaussianas();
 }
