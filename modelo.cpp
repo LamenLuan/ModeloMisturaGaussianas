@@ -3,53 +3,58 @@
 #include "Pixel.hpp"
 #include "opencv2/opencv.hpp"
 
+void iniciaModelo(cv::Mat &frameVideo, std::list<Pixel *>& frameModelo);
+
 int main()
 {
-    unsigned int contador = 1;
 
     int teste;
     bool temFrame = true;
 
-    std::list<Pixel*> pixels;
+    std::list<Pixel*> frameModelo;
     std::list<Pixel*>::iterator atual;
     
-    cv::VideoCapture video("../Videos/00005.mp4");
     cv::Mat frame, cinza, resultado;
+    cv::VideoCapture video("../Videos/teste.mts");
+    cv::VideoWriter videoSaida;
 
     if (!video.isOpened())
     {
-        std::cout << "Erro ao tentar abrir o arquivo"
-            << "\n";
+        std::cout << "Erro ao tentar abrir o arquivo" << "\n";
         return -1;
     }
-    
-    //A matriz frame recebe um frame do video.
+  
+    //A matriz "frame" recebe um frame do video aberto.
     video >> frame;
-    if (frame.empty())
+
+    if (frame.empty() )
     {
-        std::cout << "Erro ao tentar ler o primeiro frame"
-            << "\n";
+        std::cout << "Erro ao tentar ler o primeiro frame" << "\n";
         return -1;
     }
 
     //A matriz "cinza" recebe o frame convertido para grayscale.
     cv::cvtColor(frame, cinza, cv::COLOR_BGR2GRAY);
+    frame.release();
 
-    //Repeticao para a criacao de todos os pixels a partir da leitura do
-    //primeiro frame.
-    for (int i = 0; i < cinza.rows; i++)
-    {
-        for (int j = 0; j < cinza.cols; j++)
-        {
-            
-            //ERRO NA CHAMADA DO DESTRUTOR DA CLASSE PIXEL AO TENTAR CRIAR UMA 
-            //LISTA DE OBJETOS ESTÁTICOS.
-            pixels.push_back(new Pixel((int) cinza.at<unsigned char>(i, j)));
-        }
-    }
+    //Leitura do "cinza" e criacao do modelo de cada pixel correspondente.
+    iniciaModelo(cinza, frameModelo);
+    
+    //Abertura do arquivo onde sera escrito o video de saida.
+    videoSaida.open("../Videos/resultado.avi",
+        videoSaida.fourcc('M','J','P','G'),
+        60,
+        cv::Size(video.get(cv::CAP_PROP_FRAME_WIDTH),
+        video.get(cv::CAP_PROP_FRAME_HEIGHT)));
 
-    //Repetição para a leitura de novos frames e atualização do modelo ao ler
-    //seus valores.
+    if(!videoSaida.isOpened()) return -1;
+
+    //CV_8UC1 para criar matriz resultado de um canal.
+    resultado.create(cinza.rows, cinza.cols, CV_8UC1);
+    cinza.release();
+    
+    //Leitura de novos frames, escrita do video de resultado e atualizacao do
+    // modelo ao ler seus valores.
     while(temFrame)
     {
         video >> frame;
@@ -61,48 +66,44 @@ int main()
         }
 
         cv::cvtColor(frame, cinza, cv::COLOR_BGR2GRAY);
+        frame.release();
 
-        atual = pixels.begin();
-
-        for (size_t i = 0; i < frame.rows; i++)
+        //Escrita do frame resultado que sera inserido no video criado.
+        atual = frameModelo.begin();
+        for (size_t i = 0; i < cinza.rows; i++)
         {
-            for (size_t j = 0; j < frame.cols ; j++)
+            for (size_t j = 0; j < cinza.cols ; j++)
             {
-                std::cout << (*atual)->probabilidadeDoPixel(cinza.at<unsigned char>(i, j)) << "\n";
+                resultado.at<unsigned char>(i, j) = (*atual)->
+                    probabilidadeDoPixel(cinza.at<unsigned char>(i, j)) >= 0.05
+                ? 0
+                : 255;
+                
                 atual++;
             }
             
         }
 
-        for (size_t i = 0; i < frame.rows; i++)
-        {
-            for (size_t j = 0; j < frame.cols; j++)
-            {
-                //FAZER if
-            }
-        }
+        cv::cvtColor(resultado, frame, cv::COLOR_GRAY2BGR);
 
-        // Abertura do video
-        cv::VideoWriter video("../Videos/Querido_fruto_do_nosso_esforço.avi",
-                              video.fourcc('M', 'J', 'P', 'G'), 10,
-                              cv::Size(frame.cols, frame.rows));
+        videoSaida << frame;
 
-        // Escrita de frames em no video 'Querido_fruto_do_nosso_esforço.avi'
-        video.write(frame);
+        //Printando cada frame da repeticao na tela
+        imshow("Resultado", frame);
+        char c = (char)cv::waitKey(1);
+        if (c == 27)  break;
 
-        // Print do resultado da escrita do video
-        //imshow("Frame", frame);
-        //char c = (char)cv::waitKey(1);
-        //if (c == 27) // pause para print da imagem
-          //  break;
-
-        atual = pixels.begin();
+        frame.release();
+        atual = frameModelo.begin();
+/*     
         std::cout << "Frame: " << contador++ << "\n";
+*/
         for (int i = 0; i < cinza.rows; i++)
         {
             for (int j = 0; j < cinza.cols; j++)
             {
-                if(i == 250 && j == 322)
+/*
+                if (i == 723 && j == 841)
                 {
                     for (int k = 0; k < Pixel::M_QUANTIDADE_DISTRIBUICOES; k++)
                     {
@@ -132,16 +133,36 @@ int main()
                 }
                 else
                 {
-                    (*atual)->leNovoPixel(cinza.at<unsigned char>(i, j));
+                    (*atual)->leNovoPixel(cinza.at<unsigned char>(i, j)); 
                 }
                 atual++;
+*/
+                (*atual)->leNovoPixel(cinza.at<unsigned char>(i, j));
+                atual++;
+                
             }
         }
-                   
+        cinza.release();
     }
     
+    frame.release();
+    cinza.release();
     video.release();
+    resultado.release();
+
     cv::destroyAllWindows();
 
     return 0;
+}
+
+void iniciaModelo(cv::Mat &frameVideo, std::list<Pixel *>& frameModelo)
+{
+    //Repeticao para a criacao de todos os pixels a partir dos valores lidos do
+    // primeiro frame.
+    for (int i = 0; i < frameVideo.rows; i++)
+    {
+        for (int j = 0; j < frameVideo.cols; j++)
+            frameModelo.push_back
+                (new Pixel((int)frameVideo.at<unsigned char>(i, j)));
+    }
 }

@@ -14,8 +14,6 @@ Gaussiana::~Gaussiana()
 
 // Metodos:
 
-// VALOR DA PARTE 1 ESTA PASSANDO DE 5, UMA FDP PODE CHEGAR EM UM VALOR MAIOR
-// QUE UM?
 float Gaussiana::funcaoDensidadeProbabilidade(int t_valorPixel)
 {
     // Dividindo a formula em duas partes por ser extensa.
@@ -64,9 +62,9 @@ void Gaussiana::atualizaDesvioPadrao(int t_valorPixel)
 
 // O valor 2.5 define o intervalo de media que dita a ocorrencia (ou nao) do
 // match.
-bool Gaussiana::verificaMatch(int t_valorPixel)
+bool Gaussiana::verificaMatch(int t_valorPixel) const
 {
-    float desvioNecessario = m_desvioPadrao * 2.5;
+    float desvioNecessario = m_desvioPadrao * 1.5;
     return t_valorPixel <= (m_media + desvioNecessario) &&
         t_valorPixel >= (m_media - desvioNecessario);
 }

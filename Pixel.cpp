@@ -22,7 +22,7 @@ Pixel::~Pixel()
 // Probabilidade total do pixel vai ser a soma da funcao densidade
 // probabilidade de cada gaussiana da mistura multiplicado por seu peso
 // especifico.
-float Pixel::probabilidadeDoPixel(int t_valorPixel)
+float Pixel::probabilidadeDoPixel(int t_valorPixel) const
 {
     float probabilidade = 0;
     for (size_t i = 0; i < M_QUANTIDADE_DISTRIBUICOES; i++)
@@ -64,13 +64,13 @@ void Pixel::leNovoPixel(int t_valorPixel)
     {
         indiceMenor = buscaMenorPeso();
         (m_mistura + indiceMenor)->setMedia(t_valorPixel);
-        (m_mistura + indiceMenor)->setDesvioPadrao(8);
+        (m_mistura + indiceMenor)->setDesvioPadrao(3);
         (m_mistura + indiceMenor)->setPeso(0.01);
     }
     renormalizaGaussianas();
 }
  
-short Pixel::buscaMenorPeso()
+short Pixel::buscaMenorPeso() const
 {
     short indiceMenor = 0;
     for (size_t i = 1; i < M_QUANTIDADE_DISTRIBUICOES; i++)
