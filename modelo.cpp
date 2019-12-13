@@ -8,12 +8,12 @@ void iniciaModelo(cv::Mat &frameVideo, std::list<Pixel *>& frameModelo);
 int main()
 {
 
-    int teste;
+    int teste, contador = 0;
     bool temFrame = true;
 
     std::list<Pixel*> frameModelo;
     std::list<Pixel*>::iterator atual;
-    
+     
     cv::Mat frame, cinza, resultado;
     cv::VideoCapture video("../Videos/teste.mts");
     cv::VideoWriter videoSaida;
@@ -43,7 +43,7 @@ int main()
     //Abertura do arquivo onde sera escrito o video de saida.
     videoSaida.open("../Videos/resultado.avi",
         videoSaida.fourcc('M','J','P','G'),
-        60,
+        30,
         cv::Size(video.get(cv::CAP_PROP_FRAME_WIDTH),
         video.get(cv::CAP_PROP_FRAME_HEIGHT)));
 
@@ -74,11 +74,12 @@ int main()
         {
             for (size_t j = 0; j < cinza.cols ; j++)
             {
-                resultado.at<unsigned char>(i, j) = (*atual)->
-                    probabilidadeDoPixel(cinza.at<unsigned char>(i, j)) >= 0.05
-                ? 0
-                : 255;
-                
+                resultado.at<unsigned char>(i, j) = (*atual)->pixelMaisProvavel();
+                /*
+                resultado.at<unsigned char>(i, j) = (*atual)->probabilidadeDoPixel(cinza.at<unsigned char>(i, j)) >= 0.005
+                    ? 0
+                    : 255;
+                */
                 atual++;
             }
             
@@ -94,8 +95,8 @@ int main()
         if (c == 27)  break;
 
         frame.release();
-        atual = frameModelo.begin();
-/*     
+        atual = frameModelo.begin();    
+/*
         std::cout << "Frame: " << contador++ << "\n";
 */
         for (int i = 0; i < cinza.rows; i++)

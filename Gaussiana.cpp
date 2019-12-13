@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.02;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.007;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)
@@ -23,7 +23,7 @@ float Gaussiana::funcaoDensidadeProbabilidade(int t_valorPixel)
     parte2 = exp(-0.5 * diferenca * diferenca *
         (1.0f / m_desvioPadrao * m_desvioPadrao));
 
-    if (parte1 * parte2 >= 1) return 1.0;
+    if (parte1 * parte2 > 1.0) return 1.0;
     return parte1 * parte2;
 }
 
@@ -46,16 +46,17 @@ void Gaussiana::atualizaPeso(bool t_match)
 
 void Gaussiana::atualizaMedia(int t_valorPixel)
 {
-    m_media = ((1 - funcaoRho(t_valorPixel)) * m_media) + 
-        (funcaoRho(t_valorPixel) * t_valorPixel);
+    float rho = funcaoRho(t_valorPixel);
+    
+    m_media = ((1 - rho) * m_media) + (rho * t_valorPixel);
 }
 
 void Gaussiana::atualizaDesvioPadrao(int t_valorPixel)
 {
-    float diferenca = t_valorPixel - m_media;
+    float diferenca = t_valorPixel - m_media, rho = funcaoRho(t_valorPixel);
 
-    m_desvioPadrao = ((1 - funcaoRho(t_valorPixel)) * m_desvioPadrao) +
-        (funcaoRho(t_valorPixel) * diferenca * diferenca);
+    m_desvioPadrao = ((1 - rho) * m_desvioPadrao) +
+        (rho * diferenca * diferenca);
     //Limitando o desvio padrão para testes.
     if (m_desvioPadrao < 0.0001) m_desvioPadrao = 0.0001;
 }

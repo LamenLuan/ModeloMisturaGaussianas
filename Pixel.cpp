@@ -32,6 +32,11 @@ float Pixel::probabilidadeDoPixel(int t_valorPixel) const
     return probabilidade;
 }
 
+float Pixel::pixelMaisProvavel()
+{
+    return m_mistura[buscaMaiorPeso() ].getMedia();
+}
+
 void Pixel::renormalizaGaussianas()
 {
     // O valor SomatorioPesos esta baseado na soma de todos os pesos, e o
@@ -80,9 +85,14 @@ short Pixel::buscaMenorPeso() const
     }
     return indiceMenor;
 }
-// Continuar a pesquisa sobre copy constructors!
-void Pixel::trocaGaussiana()
+
+short Pixel::buscaMaiorPeso() const
 {
-    short indiceMenor = buscaMenorPeso();
-    Gaussiana *auxiliar(m_mistura + indiceMenor);
+    short indiceMenor = 0;
+    for (size_t i = 1; i < M_QUANTIDADE_DISTRIBUICOES; i++)
+    {
+        if ((m_mistura + indiceMenor)->getPeso() < (m_mistura + i)->getPeso())
+            indiceMenor = i;
+    }
+    return indiceMenor;
 }

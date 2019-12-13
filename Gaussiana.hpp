@@ -33,7 +33,7 @@ public:
     float getMedia() const;
     float getDesvioPadrao() const;
     float getPeso() const;
-
+  
 // Setters:
     void setMedia(float t_media);
     void setDesvioPadrao(float t_desvioPadrao);
