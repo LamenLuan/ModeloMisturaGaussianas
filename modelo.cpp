@@ -2,15 +2,17 @@
 #include <list>
 #include "Pixel.hpp"
 #include "opencv2/opencv.hpp"
+#include <sys/time.h>
 
 void iniciaModelo(cv::Mat &frameVideo, std::list<Pixel *>& frameModelo);
 
 int main()
 {
 
-    int teste, contador = 0;
+    int contador = 0;
     bool temFrame = true;
-
+    struct timeval inicio, fim;
+    
     std::list<Pixel*> frameModelo;
     std::list<Pixel*>::iterator atual;
      
@@ -45,9 +47,9 @@ int main()
         videoSaida.fourcc('M','J','P','G'),
         30,
         cv::Size(video.get(cv::CAP_PROP_FRAME_WIDTH),
-        video.get(cv::CAP_PROP_FRAME_HEIGHT)));
+        video.get(cv::CAP_PROP_FRAME_HEIGHT) ));
 
-    if(!videoSaida.isOpened()) return -1;
+    if(!videoSaida.isOpened() ) return -1;
 
     //CV_8UC1 para criar matriz resultado de um canal.
     resultado.create(cinza.rows, cinza.cols, CV_8UC1);
@@ -55,6 +57,7 @@ int main()
     
     //Leitura de novos frames, escrita do video de resultado e atualizacao do
     // modelo ao ler seus valores.
+    gettimeofday(&inicio, NULL);
     while(temFrame)
     {
         video >> frame;
@@ -145,7 +148,11 @@ int main()
         }
         cinza.release();
     }
-    
+    gettimeofday(&fim, NULL);
+
+    std::cout << ((fim.tv_sec * 1000 + (fim.tv_usec / 1000)) - (inicio.tv_sec *
+     1000 + (inicio.tv_usec / 1000)));
+
     frame.release();
     cinza.release();
     video.release();
