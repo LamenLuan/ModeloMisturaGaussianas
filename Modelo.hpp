@@ -10,7 +10,6 @@ class Modelo
 {
 private:
     cv::VideoCapture m_entrada;
-    std::string m_caminho_saida{""};
     std::list<Pixel*> m_frames_modelo;
 
 public:
@@ -20,7 +19,7 @@ public:
     // Exemplos:
     //      new Modelo("teste.mts");
     //      Modelo mod2("../Videos/entrada.mp4");
-    Modelo(std::string caminho_entrada, std::string caminho_saida = "");
+    Modelo(std::string caminho_entrada);
     virtual ~Modelo();
 
     // Usada internamente em executa() por questoes de reaproveitamento de 

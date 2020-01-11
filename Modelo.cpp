@@ -1,8 +1,6 @@
 #include "Modelo.hpp"
 
-Modelo::Modelo(std::string caminho_entrada, std::string caminho_saida)
-    :
-    m_entrada(caminho_entrada), m_caminho_saida(caminho_saida)
+Modelo::Modelo(std::string caminho_entrada) : m_entrada(caminho_entrada)
 { 
 }
 
