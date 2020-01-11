@@ -7,7 +7,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} )
 include(CTest)
 enable_testing()
 
-add_executable(ModeloMisturaGaussianas modelo.cpp Gaussiana.cpp Pixel.cpp)
+add_executable(ModeloMisturaGaussianas teste.cpp Modelo.cpp Pixel.cpp Gaussiana.cpp)
 target_link_libraries( ModeloMisturaGaussianas ${OpenCV_LIBS} )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

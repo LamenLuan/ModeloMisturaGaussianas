@@ -1,6 +1,6 @@
 #include "Gaussiana.hpp"
 
-const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.005;
+const float Gaussiana::M_CONSTANTE_APRENDIZAGEM = 0.004;
 
 // Construtores/Destrutores:
 Gaussiana::Gaussiana(float t_media, float t_peso)

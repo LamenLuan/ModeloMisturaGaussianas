@@ -12,16 +12,15 @@ private:
     float m_peso{0};
 
 public:
-
     // Constante de aprendizagem usada na atualizacao
     // dos valores da Gaussiana.
     static const float M_CONSTANTE_APRENDIZAGEM;
 
-// Construtores/Destrutores:
+    // Construtores/Destrutores:
     Gaussiana(float t_media = 0, float t_peso = 1);
     virtual ~Gaussiana();
 
-// Metodos:
+    // Metodos:
     float funcaoDensidadeProbabilidade(int t_valorPixel);
     float funcaoRho(int t_valorPixel);
     void atualizaPeso(bool t_match);
@@ -29,12 +28,12 @@ public:
     void atualizaDesvioPadrao(int t_valorPixel);
     bool verificaMatch(int t_valorPixel) const;
 
-// Getters:
+    // Getters:
     float getMedia() const;
     float getDesvioPadrao() const;
     float getPeso() const;
-  
-// Setters:
+
+    // Setters:
     void setMedia(float t_media);
     void setDesvioPadrao(float t_desvioPadrao);
     void setPeso(float t_peso);
